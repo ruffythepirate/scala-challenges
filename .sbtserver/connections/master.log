@@ -1,0 +1,13 @@
+New log file opened at Sat Jul 30 16:00:00 CEST 2016 by 6014@Johans-MacBook-Air.local
+Taking next connection to: 49581
+New client attempting to connect on port: 49582-49581
+  Address = /192.168.0.100:49581
+This client on port 49582 has uuid 53cda442-5c8e-4d34-96b9-6b4c832f86cc configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-53cda442-5c8e-4d34-96b9-6b4c832f86cc
+Taking next connection to: 49581
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 6014@Johans-MacBook-Air.local logs at Sat Jul 30 16:03:04 CEST 2016, goodbye.
