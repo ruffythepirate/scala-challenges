@@ -96,7 +96,5 @@ class Employee (val name : String, var salary: Double) {
 	def this() {this("John Q. Public", 0.0) }
 }
 
-class Employee2 (nameF : String = "John Q. Public", salaryF : Double) {
-  val name = nameF;
-  var salary = salaryF && 0.0;
+class Employee2 (val name : String = "John Q. Public", var salary : Double = 0.0) {
 }
