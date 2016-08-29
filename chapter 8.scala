@@ -105,11 +105,22 @@ class Bundle extends Item {
   Provide a subclass LabeledPoint whose constructor takes a label value and x and y coordinate such as new LabeledPoint("Black Thursday", 23, 23)
 **/
 
-class Point(val x : Double, val y : Double) {
+case class Point(val x : Double, val y : Double) {
 }
 
 class LabeledPoint(val label: String, x:Double, y:Double) extends Point(x, y) {
 }
 
-// 8.6
+// 8.6 Define an abstract class Shape with an abstract method centerPoint and subclasses Rectangle and Circle. Provide appropriate constructors for the subclasses and override the centerPoint method in each subclass.
 
+abstract class Shape(val topLeft: Point) {
+  def centerPoint : Point
+}
+
+class Circle(radius: Double, x: Double, y: Double) extends Shape(new Point(x, y)) {
+  override val centerPoint = new Point(x + radius, y + radius)
+}
+
+class Circle(w: Double, h:Double,  x: Double, y: Double) extends Shape(new Point(x, y)) {
+  override val centerPoint = new Point(x + w/2, y + h/2)
+}
