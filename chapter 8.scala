@@ -121,6 +121,65 @@ class Circle(radius: Double, x: Double, y: Double) extends Shape(new Point(x, y)
   override val centerPoint = new Point(x + radius, y + radius)
 }
 
-class Circle(w: Double, h:Double,  x: Double, y: Double) extends Shape(new Point(x, y)) {
+class Rectangle(w: Double, h:Double,  x: Double, y: Double) extends Shape(new Point(x, y)) {
   override val centerPoint = new Point(x + w/2, y + h/2)
 }
+
+// 8.7 Provide a class Square that extends java.awt.Rectangle and has three constructors: one that constructs a square with a give corner (0, 0) and a given width, and one that constructs a square with corner (0, 0) amd width 0
+
+class Square(topLeft : java.awt.Point, width: Int) extends java.awt.Rectangle(topLeft.x, topLeft.y, width, width) {
+  def this() {
+    this(new java.awt.Point(0, 0), 0)
+  }
+
+  def this(width: Int) {
+    this(new java.awt.Point(0, 0), width)
+  }
+}
+
+// 8.8 Compile the Person and SecretAgent classes in Section 8.6, "Overriding Fields", on page 89 and analyze the class files with javap. How many name fields are there? How many name getter methods are there? What do they get? (Hint: Use the -c and -private options.)
+
+class Person(val name: String) {
+  override def toString = getClass.getName + s"[name=$name]"
+}
+
+class SecretAgent(codename : String) extends Person(codename) {
+  override val name = "secret"
+
+  override val toString = "secret"
+}
+
+//It seems like there is only one name() method in each of the classes, one returning a constant string and one returning the property name.
+
+// 8.9 In the Creature class of section 10, "Construction Order and Early Definitions," on page 92, replace val range with a def. What happens when you also use a def in the Ant subclass? What happens when you use a vaö in the subclass? Why?
+
+class Creature {
+  val range: Int = 10
+  val env: Array[Int] = new Array[Int](range)
+}
+
+  class AntA extends Creature {
+    override def range = 2
+  }
+
+  class AntB extends Creature {
+    override val range = 5
+  }
+
+  //Def range is defined before primary constructor call =>
+  assert( new AntA().env.size == 2)
+
+  //Val range is defined after primary constructor call =>
+  assert( new AntB().env.size == 0)
+
+  /**
+  * 8.10 The file scala/collection/immutable/Stack.scala contains the defintions
+  * class Stack[A] protected (protected val elems: List[A])
+  * Explain the meanings of the protected keywords.
+  * (Hint: Review the discussion of private constructors in Chapter 5)
+  **/
+
+  // The first protected indicates that only inherited classes and auxilliary constructors can call the primary constructor.
+  // The second protected indicates that the elements field will be protected.
+
+
