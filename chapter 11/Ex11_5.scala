@@ -28,13 +28,13 @@ class Table (content: Array[Array[String]]) {
     val stringBuild = new StringBuilder()
     stringBuild.append("<table>")
     for(row <- content) {
-      stringBuild.append("<tr>")
+      stringBuild.append("\t<tr>\n")
       for(column <- row) {
-        stringBuild.append("<td>")
+        stringBuild.append("\t\t<td>")
         stringBuild.append(column)
-        stringBuild.append("</td>")
+        stringBuild.append("</td>\n")
       }
-      stringBuild.append("</tr>")
+      stringBuild.append("\t</tr>\n")
     }
       stringBuild.append("</table>")
       stringBuild.toString

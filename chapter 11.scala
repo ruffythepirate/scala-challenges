@@ -130,4 +130,145 @@ class Table (content: Array[Array[String]]) {
 Supply operators for combining two ASCIIArt figures horizontally
 
 or vertically. Choose operators with appropriate precendence.
-  **/
+**/
+
+
+object Ex11_6 extends App {
+
+  class AsciiArt (val content : Array[String]) {
+
+    // Vertical addition
+    def +(other : AsciiArt) = {
+      new AsciiArt(content ++ other.content)
+    }
+
+    // Horizontal addition
+    def *(other : AsciiArt) = {
+      val verticalLength = math.max(content.size, other.content.size)
+      val longestLength = content.map(_.size).max
+      val newContent = extendContent(verticalLength).zip(other.extendContent(verticalLength))
+          .map(t => t._1.padTo(longestLength + 1, ' ') + t._2)
+      new AsciiArt(newContent)
+    }
+
+    private def extendContent(toLength: Int) = {
+      val emptyStringArray = (1 to (toLength - content.size)).map(t => "").toArray
+      content ++ emptyStringArray
+    }
+
+    override def toString = {
+      content.mkString("\n")
+    }
+  }
+}
+
+/**
+  11.7 Implement a class BitSequence that stores a sequence of 64 bits packed in a Long value. Supply apply and update operators to get and set anindividual bit.
+**/
+
+object Ex11_7 extends App {
+
+  object BitSequence {
+    def apply(firstBit : Int) = {
+      val initalValue = 0l | 1 << firstBit
+      
+      new BitSequence (initalValue)
+    }
+
+    def apply() = {
+      new BitSequence (0l)
+    }
+  }
+
+  class BitSequence (private var _value : Long) {
+
+    def value = _value
+
+    def update(index : Int, newValue : Boolean) {
+
+      _value = if(newValue) (_value | (1 << index)) else (_value ^ (1 << index))
+    }
+  }
+
+  assert(BitSequence(0).value == 1)
+
+  val myBitSequence = BitSequence(0)
+  myBitSequence(1) = true
+
+  assert(myBitSequence.value == 3)
+}
+
+/**
+*
+*  11.8 Provide a class Matrix - you can choose whether you want to implement 2 x 2 matrices of any size, square matrices of any size, or m x n matrices.
+*       Supply operations + and *.
+*       The latter should also work with scalars, for example mat*2. A single element should be accessible as mat(row, col)
+**/
+
+  object Matrix {
+
+    def apply(rows: Int, cols: Int) = new Matrix(Array.ofDim[Int](rows,cols))
+  }
+
+  class Matrix (private val _content: Array[Array[Int]]) {
+
+    private val _rows = _content.size
+    private val _columns = if(_rows > 0) _content(0).size else 0
+    
+    def apply(row : Int, col: Int) = _content(row)(col)
+
+    def update(row : Int, col: Int, value: Int) {_content(row)(col) = value}
+
+    def *(other: Matrix) = {
+      val otherRows = other._rows; val otherColumns = other._columns
+      val rows = _rows; val columns = _columns
+      if(_columns != other._rows) {
+        throw new Exception(s"Invalid dimensions of matrices: [$otherRows, $otherColumns] cannot be multiplied to a matrix with dim [$rows, $columns]")
+      }
+
+      val newContent = Array.ofDim[Int](_rows, otherColumns)
+
+      for(i <- 0 until rows) {
+        for(j <- 0 until otherColumns) {
+          for( k <- 0 until columns) {
+            newContent(i)(j) += this(i, k) * other(k, j);
+          }
+        }
+      }
+      new Matrix(newContent)
+    }
+
+    def *(scalar : Int) = {
+      new Matrix(_content.map(_.map(_*scalar)))
+    }
+
+    def +(other :Matrix) = {
+      val otherRows = other._rows; val otherColumns = other._columns
+      val rows = _rows; val columns = _columns
+
+      if(_rows != other._rows || _columns != other._columns) {
+        throw new Exception(s"Invalid dimensions of matrices: dim [$otherRows, $otherColumns] cannot be added to a matrix with dim [$rows, $columns]")
+      }
+
+      val newContent = Array.ofDim[Int](_rows, _columns)
+      for(i <- 0 until _rows) {
+        for(j <- 0 until _columns) {
+          newContent(i)(j) = this(i, j) + other(i, j);
+        }
+      }
+
+      new Matrix(newContent)
+    }
+
+    override def toString = "[" + _content.map(_.mkString(", ")).mkString("\n") + "]"
+
+  }
+
+// 11.9 Define an unapply operation for the RichFile class that extracts the file path, name, and extension.
+// For example, the file /home/cay/readme.txt has path /home/cay, name readme and extension txt.
+
+
+// 11.10 Define an unapplySeq operation for the RichFile class that extracts all path segments. 
+// For example, for the file /home/cay/readme.txt, you should produce a sequence of three segments: home, cay, and readme.txt.
+
+

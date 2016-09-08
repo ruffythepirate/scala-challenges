@@ -43,9 +43,9 @@ object Ex10_2 extends App {
     }
   }
 
-  class OrderedPoint(x : Int, y: Int) extends java.awt.Point(x, y) with scala.math.Ordered[java.awt.Point]{
+  class OrderedPoint(x : Int, y: Int) extends java.awt.Point(x, y) with scala.math.Ordered[OrderedPoint]{
     
-    def compare(that: java.awt.Point) : Int = (if(x -that.x != 0) x-that.x else y - that.y)
+    def compare(that: OrderedPoint) : Int = (if(x -that.x != 0) x-that.x else y - that.y)
     def ==(that: OrderedPoint) = x == that.x && y == that.y
   }
 
@@ -134,6 +134,8 @@ object Ex10_4 extends App {
 * Reimplement PropertyChangeSupport as a trait, and mix it into the java.awt.Point class.
 **/
 
+
+
 /**
 * 10.6 In the Java AWT library, we have a class Container, a subclass of Component that collects multiple components.
 * For example, a Button is a Component, but a Panel is a Container. 
@@ -141,7 +143,7 @@ object Ex10_4 extends App {
 * Swing has JComponent and JButton, but if you look closely, you will notice something strange.
 * JComponent extends Container, even though it makes no sense to add other components to, say, a JButton.
 * The Swing designers would have ideally preffered the design in Figure 10-4.
-* JContainer <------| 
+* Component  <------| 
 *     ^         Container
 * JComponent <------^
 *     ^         JContainer
@@ -150,6 +152,15 @@ object Ex10_4 extends App {
 *
 * But that's not possible in Java. Explain why not. How could the design be executed in Scala with traits?
 **/
+
+// It is not possible because Container and JComponent are both classes. But it is done because
+// they probably want implementation logic from both in for example the JPanel.
+
+trait MyJComponent extends javax.swing.JComponent {
+
+}
+
+trait MyContainer extends 
 
 /**
 * 10.7 There are dozens of Scala trait tutorials with silly examples of barking dogs or philosophizing frogs.
@@ -162,6 +173,14 @@ object Ex10_4 extends App {
 * Reimplement buffering as a trait. For simplicity, override the read method.
 **/
 
+trait BufferedInputStream {
+  this : java.io.InputStream =>
+
+  val _containedInput = new java.io.BufferedInputStream(this)
+
+  override def read = _containedInput.read
+}
+
 /**
 * 10.9 Using the logger traits from this chapter, add logging to the solution of the preceding problem that demonstrates buffering
 **/
@@ -170,6 +189,8 @@ object Ex10_4 extends App {
 * 10.10 Implement a class IterableInputStream that extends java.io.InputStream with the trait Iterable[Byte].
 **/ 
 
+class IterableInputStream extends java.io.InputStream with Iterable[Byte] {
 
+}
 
 

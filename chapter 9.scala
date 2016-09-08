@@ -105,6 +105,7 @@ object Ex9_5 extends App {
 
  // 9.6 Write a regular expression searching for quoted strings "like this, maybe with \" or \\" in Java or C++ program. Write a Scala program that prints out all such strings in a source file.
 
+"""""(.*?)(?:[^\\]"|[^\\](?:\\\\)+")""".r.unanchored // This expression works for \" and \\"
 
 // 9.7 Write a Scala program that reads a text file and prints all tokens in the file that are not floating-point numbers. Use a regular expression.
 
