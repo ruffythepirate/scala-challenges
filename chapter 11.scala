@@ -264,9 +264,32 @@ object Ex11_7 extends App {
 
   }
 
+
 // 11.9 Define an unapply operation for the RichFile class that extracts the file path, name, and extension.
 // For example, the file /home/cay/readme.txt has path /home/cay, name readme and extension txt.
 
+object Ex11_9 extends App {
+
+  object RichFileExtractor {
+
+    def unapply(file : java.io.File) : Option[(String, String, String)] = {
+
+      val absolutePath = file.getAbsolutePath
+
+      val pathTokens = absolutePath.split(java.io.File.separator)
+
+      val fileNameWithExtension = pathTokens.last
+
+      val fileName = 
+        if(fileNameWithExtension.contains('.')) fileNameWithExtension.split('.').dropRight(1).mkString(".") else fileNameWithExtension
+
+      val extension = 
+        if(fileNameWithExtension.contains('.')) fileNameWithExtension.split('.').last else ""
+
+      Some((pathTokens.dropRight(1).mkString(java.io.File.separator), fileName, extension.toString))
+    }
+  }  
+}
 
 // 11.10 Define an unapplySeq operation for the RichFile class that extracts all path segments. 
 // For example, for the file /home/cay/readme.txt, you should produce a sequence of three segments: home, cay, and readme.txt.
