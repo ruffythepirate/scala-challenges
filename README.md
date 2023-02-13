@@ -1,4 +1,4 @@
-#Content
+# Content
 
 * Chapter 1 - The Basics (A1)
 * Chapter 2 - Control Structures and Functions (A1)
